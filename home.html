@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Gerli Hirv" />
+    <title>Studen Restaurant Finder</title>
+    <link rel="stylesheet" href="CSS/home.css">
+  </head>
+
+  <body>
+    <header>
+        <nav id="main-nav">
+            <img id="logo" src="CSS/logo.png" alt="Logo">
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="profile.html">My Profile</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<div class="mainContainer">
+
+    <main>
+        <div class="finder">
+            <h3>Find our menus</h3>
+            <select name="cityMenu">
+                <option value="helsinki">City</option>
+            </select>
+            <br>
+            <select name="providerMenu" id="">
+                <option value="Fazer">Provider</option>
+            </select>
+            <br>
+            <button>Search</button>
+        </div>
+
+        <div class="menus">
+            <nav>
+                <button id="today-btn">Today</button>
+                <button id="week-btn">This Week</button>
+                <button id="week2-btn">Next Week</button>
+            </nav>
+            <section id="menu-content">
+                <p>Here menu will be displayed</p>
+            </section>
+        </div>
+    </main>
+
+    <aside>
+        <p>Map</p>
+    </aside>
+</div>
+
+  </body>
+
+</html>

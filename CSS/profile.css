@@ -1,0 +1,59 @@
+#main-nav {
+    background: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+    display: flex;          /* Align items in a row */
+    align-items: center;    /* Vertically center items */
+    justify-content: space-between; /* Optional: spread out the items */
+    padding: 1rem;          /* Add padding inside nav for spacing */
+}
+
+/* Remove default list styles from ul */
+nav ul {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;          /* Display list items in a row */
+    list-style-type: none;  /* Remove default list bullets */
+    padding: 0;             /* Remove padding from the ul */
+    margin: 0;              /* Remove margin */
+}
+
+nav ul li {
+    padding: 1rem;
+}
+
+#logo {
+    width: 100px;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: whitesmoke;
+}
+a:visited {
+    color: whitesmoke;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(pexels-enginakyurt-1435904.jpg);
+    background-size: cover; /* Adjust the size of the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-position: center; /* Center the background image */
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    height: 80vh;
+    margin-top: 2rem;
+    background-color: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+}

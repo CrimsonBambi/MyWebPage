@@ -1,0 +1,114 @@
+#main-nav {
+    background: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+    display: flex;          /* Align items in a row */
+    align-items: center;    /* Vertically center items */
+    justify-content: space-between; /* Optional: spread out the items */
+    padding: 1rem;          /* Add padding inside nav for spacing */
+}
+
+/* Remove default list styles from ul */
+nav ul {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;          /* Display list items in a row */
+    list-style-type: none;  /* Remove default list bullets */
+    padding: 0;             /* Remove padding from the ul */
+    margin: 0;              /* Remove margin */
+}
+
+nav ul li {
+    padding: 1rem;
+}
+
+#logo {
+    width: 100px;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: whitesmoke;
+}
+a:visited {
+    color: whitesmoke;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(pexels-enginakyurt-1435904.jpg);
+    background-size: cover; /* Adjust the size of the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-position: center; /* Center the background image */
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    height: 80vh;
+    margin-top: 2rem;
+    background-color: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+}
+
+.main-container {
+    display: flex;
+    width: 60vh;
+    height: 60vh;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+    margin-top: 4rem;
+    background-color: aliceblue;
+}
+
+form {
+    padding: 0.5rem;
+    width: 60vh;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(160, 110, 9, 0.712);
+}
+
+label {
+    display: flex;
+    padding: 0.5rem;
+    margin-top: 7rem;
+}
+
+h2 {
+    color: whitesmoke;
+}
+
+input {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border-style: groove;
+    border-color: rgba(0, 0, 0, 0.414);  
+}
+
+#login_button {
+    padding: 0.5rem;
+    width: 25vh;
+    border-radius: 0.5rem;
+    border-style: groove;
+    border-color: rgba(0, 0, 0, 0.414);   
+}
+
+#login_button:hover {
+    background-color: rgb(198, 198, 198);
+}
+
+#register { /* a link */
+    font-weight: bolder;
+    margin-left: 5px;
+}
