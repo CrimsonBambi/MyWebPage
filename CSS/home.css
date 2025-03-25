@@ -70,7 +70,7 @@ a:hover {
 .finder button {
     padding: 0.5rem;
     margin-left: 1.5rem;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     border-style: groove;
     border-color: rgba(0, 0, 0, 0.414); 
 }
