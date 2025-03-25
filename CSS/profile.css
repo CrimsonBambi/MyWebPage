@@ -57,3 +57,44 @@ main {
     background-color: rgba(51, 48, 48, 0.737);
     border-radius: 1rem;
 }
+
+.main-container {
+    display: flex;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 120vh;
+}
+
+#avatar {
+    width: 180px;
+    height: 180px;
+    border-style: groove;
+    border-color: rgba(160, 110, 9, 0.712);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 70vh;
+    background-color: rgba(160, 110, 9, 0.712);
+    border-radius: 1rem;
+}
+
+#settings {
+    margin-top: 5rem;
+    margin-left: 20rem;
+    width: 40px;
+    height: auto;
+}
+
+#settings:hover {
+    background-color: rgba(160, 110, 9, 0.401);
+    border-radius: 0.8rem;
+}
