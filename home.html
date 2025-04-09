@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="UTF-8">
     <meta name="author" content="Gerli Hirv" />
+    <script src="wep_page.js" type="module" defer></script>
     <title>Studen Restaurant Finder</title>
     <link rel="stylesheet" href="CSS/home.css">
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
 
   <body>
@@ -15,44 +18,91 @@
             <ul>
                 <li><a href="home.html">Home</a></li>
                 <li><a href="profile.html">My Profile</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="#" id="open-login-modal" class="nav-button">Login</a></li>
             </ul>
         </nav>
     </header>
 
-<div class="mainContainer">
-
     <main>
-        <div class="finder">
-            <h3>Find our menus</h3>
-            <select name="cityMenu">
-                <option value="helsinki">City</option>
-            </select>
-            <br>
-            <select name="providerMenu" id="">
-                <option value="Fazer">Provider</option>
-            </select>
-            <br>
-            <button>Search</button>
-        </div>
+        <div class="restaurant-container">
+            <h2>Find our restaurants</h2>
+            <div class="finder">
+                <select id="menu-city">
+                    <!--<option value="helsinki">City</option>-->
+                </select>
+                <button type="button" id="search-button">Search</button>
+            </div>
+            <div id="menu-links">
+                <li><a href="#" id="open-today-menu" ><strong>Todays Menu</strong></a></li>
+                <li><a href="#" id="open-week-menu" ><strong>Weekly Menu</strong></a></li>
+            </div>
+            <div id="selected-restaurant">
+                <!-- Selected restaurant name will be displayed here -->
+            </div>
+            
+            <div class="restaurants">
+                <table id="restaurant-table">
+                    <tr id="table-header">
+                        <th>Name</th>
+                        <th>City</th>
+                    </tr>
+                    <!-- add restaurants here -->
+                </table>
+            </div>
 
-        <div class="menus">
-            <nav>
-                <button id="today-btn">Today</button>
-                <button id="week-btn">This Week</button>
-                <button id="week2-btn">Next Week</button>
-            </nav>
-            <section id="menu-content">
-                <p>Here menu will be displayed</p>
-            </section>
+        </div>
+        <div id="map">
+            <!-- map here -->
         </div>
     </main>
 
-    <aside>
-        <p>Map</p>
-    </aside>
-</div>
+    <dialog id="today-menu">
+        <button type="button" id="close-today-menu">&#10005;</button>
+        <div id="today-menu-content">
+            <!-- todays menu here -->
+        </div>
+    </dialog>
 
+    <dialog id="week-menu">
+        <button type="button" id="close-week-menu">&#10005;</button>
+        <div id="week-menu-content">
+            <!-- weekly menu here -->
+        </div>
+    </dialog>
+
+    <dialog id="login-modal">
+        <button type="button" id="close-login">&#10005;</button>
+        <form method="dialog" id="login-form">
+          <h2>Login</h2>
+          <div id="login-input">
+              <input type="text" id="username" name="username" placeholder="Enter your username" required />
+              <input type="password" id="password" name="password" placeholder="Password" required />
+          </div>
+          <button type="submit">Login</button>
+          <p>Don't have an account yet? <a href="#" id="open-register-modal" class="nav-button"><strong>Register</strong></a></p>
+        </form>
+    </dialog>
+
+    <dialog id="register-modal">
+        <button type="button" id="close-register">&#10005;</button>
+        <form method="dialog" id="register-form">
+            <h2>Registeration</h2>
+        <div class="register-input">
+            <div id="register-input-left">
+                <input type="text" id="username" name="username" placeholder="Username" required />
+                <input type="text" id="eamil" name="email" placeholder="Email" required />
+            </div>
+            <div id="register-input-right">
+                <input type="password" id="password" placeholder="Password" required />
+                <input type="password" id="confirm-password" placeholder="Confirm Password" required />
+            </div>
+        </div>
+        <button type="submit">Register</button>
+        </form>
+    </dialog>
+
+    <dialog id="menu-modal">
+        <!-- created in JS -->
+    </dialog>
   </body>
-
 </html>

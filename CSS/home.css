@@ -1,3 +1,140 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(pexels-enginakyurt-1435904.jpg);
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    background-color: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+aside {
+    display: flex;
+    background-color: aliceblue;
+    border-radius: 1rem;
+    margin: 1rem;
+    width: 20vh;
+    height: 20vh;
+}
+
+.restaurant-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 0.5rem;
+    margin-top: 1rem;
+    background: rgb(160, 110, 9);
+}
+
+.restaurant-container h2 {
+    color: whitesmoke;
+}
+
+.restaurants {
+    width: 80vh;
+    height: 45vh;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(160, 110, 9, 0.647) whitesmoke;
+    padding: 0.5rem; 
+    background-color: whitesmoke;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+}
+
+.restaurants table {
+    width: 75vh;
+}
+
+.restaurants table tr:not(:first-child) {
+    font-weight: 400;
+    justify-content: space-evenly;
+}
+
+.restaurants table tr:not(:first-child):hover {
+    background-color: rgba(160, 110, 9, 0.647);
+}
+
+.restaurants table td {
+    height: 4vh;
+    padding: auto;
+}
+
+.restaurants table th {
+    height: 6vh;
+    padding: auto;
+}
+
+.finder {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+    height: auto;
+    width: auto;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.finder select {
+    height: 2.5rem;
+    width: 15rem;
+    margin-right: 5rem;
+    border: none;
+    border-radius: 0.3rem;
+    border-bottom-style: double;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double;
+    border-right-color: rgb(217, 222, 225);
+    background-color: whitesmoke;
+    font-size: 1rem; 
+}
+
+.finder select:focus {
+    outline-color: rgb(184, 188, 190);
+    border-width: 0.2rem;
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+}
+
+.finder button {
+    border-radius: 1.5rem;
+    width: 6rem;
+    height: 2.5rem;
+    border: none;
+    background-color: whitesmoke;
+    border-bottom-style: double ;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double ;
+    border-right-color: rgb(217, 222, 225);
+}
+
+.finder button:hover {
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+    border-width: 0.5rem;
+}
+
 #main-nav {
     background: rgba(51, 48, 48, 0.737);
     border-radius: 1rem;
@@ -42,113 +179,297 @@ a:hover {
     text-decoration: underline;
 }
 
-.finder {
-    display: flex; /* Use flexbox for layout */
-    flex-direction: row; /* Stack items vertically */
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Center items vertically */
-    padding: 0.5rem;
-    margin: 0.5rem;
+
+/*LOGIN MODAL CSS*/
+
+#login-modal {
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    border: none;
+    border-style: double;
     border-radius: 1rem;
-    width: 70vh;
-    height: 10vh;
-    background: rgba(160, 110, 9, 0.712);
+    max-width: 35%;
+    max-height: 65%;
+    border-color: rgb(217, 222, 225);
+    background: rgb(160, 110, 9);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s ease;
 }
 
-.finder h3 {
-    color: whitesmoke;
-    font-size: 20px;
+#login-modal::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
 }
 
-.finder select {
-    width: 20vh;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    border-style: groove;
-    border-color: rgba(0, 0, 0, 0.414);  
+/* Animate appearance */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.finder button {
-    padding: 0.5rem;
-    margin-left: 1.5rem;
-    border-radius: 1rem;
-    border-style: groove;
-    border-color: rgba(0, 0, 0, 0.414); 
-}
-
-.finder button:hover {
-    background-color: rgb(198, 198, 198);
-}
-
-.menus {
-    width: 70vh;
-    height: 60vh;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    border-radius: 1rem;
-    margin-top: 2rem;
-    background: rgba(160, 110, 9, 0.712);
-}
-
-.menus button {
-    padding: 0.5rem;
-    width: 25vh;
-    border-radius: 1rem;
-    border-style: groove;
-    border-color: rgba(0, 0, 0, 0.414); 
-}
-
-.menus button:hover {
-    background-color: rgb(198, 198, 198);
-}
-
-.mainContainer {
-    display: flex;
-    height: 80vh;
-    justify-content: space-between;
-    margin-top: 2rem;
-    background-color: rgba(51, 48, 48, 0.737);
-    border-radius: 1rem;
-    backdrop-filter: blur(5px);
-}
-
-.menus button {
-    width: 150px;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-main {
+#login-form {
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
-    border-radius: 1rem;
-    margin: 1rem;
-    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    margin-top: 1rem;
 }
 
-aside {
-    display: block;
-    background-color: aliceblue;
-    padding: 1rem;
-    margin: 1rem;
-    width: 50vh;
-    border-radius: 1rem;
+#login-form h2 {
+    color: whitesmoke;
+    font-weight: 700;
+    font-size: xx-large;
 }
 
-select {
+#login-form button {
+    border-radius: 1rem;
+    width: 6rem;
+    height: 2.5rem;
+    margin-top: 3rem;
+    border: none;
+    background-color: whitesmoke;
+    border-bottom-style: double ;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double ;
+    border-right-color: rgb(217, 222, 225);
+}
+
+#login-form button:hover {
+    background-image: url(pictures/white-background.jpg);
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+    border-width: 0.5rem;
+}
+
+/* Input styling*/
+#login-input {
+    display: flex;
+    flex-direction: column; 
+    margin-top: 2rem;    
+}
+
+#login-input input {
+    height: 3vh;
+    width: 35vh;
     margin: 0.5rem;
     padding: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    border-bottom-style: double ;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double ;
+    border-right-color: rgb(217, 222, 225);
+    font-size: 1rem;
 }
 
-body {
+#login-input input:focus {
+    outline-color: rgb(184, 188, 190);
+    border-width: 0.2rem;
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+}
+
+
+/*REGISTERATION CSS*/
+
+#register-modal {
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 1rem;
+    border-style: double ;
+    border-color: rgb(217, 222, 225);
+    background: rgb(160, 110, 9);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: auto;
+    height: auto;
+    max-width: 55%;
+    max-height: 55%;
+    animation: fadeIn 0.3s ease-out;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url(pexels-enginakyurt-1435904.jpg);
-    background-size: cover; /* Adjust the size of the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-    background-position: center; /* Center the background image */
+    transition: transform 0.3s ease;
+}
+
+#register-modal::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+}
+
+#register-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+}
+
+#register-form h2 {
+    color: whitesmoke;
+}
+
+#register-form button {
+    border-radius: 1rem;
+    width: 6rem;
+    height: 2.5rem;
+    margin-top: 1.5rem;
+    border: none;
+    background-color: whitesmoke;
+    border-bottom-style: double ;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double ;
+    border-right-color: rgb(217, 222, 225);
+}
+
+#register-form button:hover {
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+    border-width: 0.5rem;
+}
+
+.register-input label {
+    padding: 0.1rem;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    color: whitesmoke;
+}
+
+.register-input {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+}
+
+.register-input input {
+    height: 3vh;
+    width: 35vh;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    border-bottom-style: double ;
+    border-bottom-color: rgb(217, 222, 225);
+    border-right-style: double ;
+    border-right-color: rgb(217, 222, 225);
+    font-size: 1rem;
+}
+
+.register-input input:focus {
+    outline-color: rgb(184, 188, 190);
+    border-width: 0.2rem;
+    box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
+}
+
+#register-input-left {
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+}
+
+#register-input-right {
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+}
+
+/*register modal buttons*/
+
+#register-buttons {
+    display: flex; 
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    background-color: rgba(107, 110, 111, 0.8); /* Add a hover color */
+    color: whitesmoke; /* Optional: Change text color */
+}
+
+#map {
+    border-radius: 1rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    width: 90vh;
+    height: 80vh;
+    padding: auto;
+    margin-top: 1rem;
+    margin: 0.5rem;
+    padding: 1rem;
+}
+
+#selected-restaurant {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 82vh;
+    height: 5vh;
+    margin: 0.5rem;
+    background-color: whitesmoke;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+}
+
+#selected-restaurant h4 {
+    padding: 0.5rem;
+    font-weight: 500;
+}
+
+#menu-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50vh;
+    margin-top: 1rem;
+}
+
+#menu-links li {
+    list-style-type: none;
+    color: whitesmoke;
+}
+
+#menu-links li:hover {
+    text-decoration: underline;
+}
+
+#today-menu {
+    width: 130vh;
+    height: 80vh;
+    border: none;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    background-color: whitesmoke;
+    animation: fadeIn 0.3s ease-out;
+    transition: transform 0.3s ease;
+}
+
+#today-menu::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+}
+
+#week-menu {
+    width: 130vh;
+    height: 80vh;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    background-color: whitesmoke;
+    animation: fadeIn 0.3s ease-out;
+    transition: transform 0.3s ease;
+}
+
+#week-menu::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
 }
