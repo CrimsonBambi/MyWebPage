@@ -28,6 +28,7 @@ aside {
     height: 20vh;
 }
 
+/* HOLDS 2 CONTAINERS: .finder & .restaurants*/
 .restaurant-container {
     display: flex;
     flex-direction: column;
@@ -46,6 +47,7 @@ aside {
     color: whitesmoke;
 }
 
+/* CONTAINER FOR DISPLAYED RESTAURAN TABLE*/
 .restaurants {
     width: 80vh;
     height: 45vh;
@@ -85,7 +87,7 @@ aside {
     height: 6vh;
     padding: auto;
 }
-
+/* CITY SELECTER AND SEARCH BUTTON CONTAINER*/
 .finder {
     display: flex; 
     flex-direction: row; 
@@ -135,33 +137,33 @@ aside {
     border-width: 0.5rem;
 }
 
+/*NAVIGATION CSS*/
 #main-nav {
     background: rgba(51, 48, 48, 0.737);
     border-radius: 1rem;
-    display: flex;          /* Align items in a row */
-    align-items: center;    /* Vertically center items */
-    justify-content: space-between; /* Optional: spread out the items */
-    padding: 1rem;          /* Add padding inside nav for spacing */
+    display: flex;          
+    align-items: center;
+    justify-content: space-between; 
+    padding: 1rem;    
     backdrop-filter: blur(5px);
-}
-
-/* Remove default list styles from ul */
-nav ul {
-    font-size: 1.2rem;
-    font-weight: 600;
-    display: flex;          /* Display list items in a row */
-    list-style-type: none;  /* Remove default list bullets */
-    padding: 0;             /* Remove padding from the ul */
-    margin: 0;              /* Remove margin */
-}
-
-nav ul li {
-    padding: 1rem;
 }
 
 #logo {
     width: 100px;
     height: auto;
+}
+
+nav ul {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;          
+    list-style-type: none;  
+    padding: 0;            
+    margin: 0;         
+}
+
+nav ul li {
+    padding: 1rem;
 }
 
 a {
@@ -181,7 +183,6 @@ a:hover {
 
 
 /*LOGIN MODAL CSS*/
-
 #login-modal {
     justify-content: center;
     align-items: center;
@@ -247,12 +248,10 @@ a:hover {
 }
 
 #login-form button:hover {
-    background-image: url(pictures/white-background.jpg);
     box-shadow: 0 0 0.3125rem rgb(107, 110, 111);
     border-width: 0.5rem;
 }
 
-/* Input styling*/
 #login-input {
     display: flex;
     flex-direction: column; 
@@ -281,7 +280,6 @@ a:hover {
 
 
 /*REGISTERATION CSS*/
-
 #register-modal {
     justify-content: center;
     align-items: center;
@@ -381,8 +379,6 @@ a:hover {
     margin: 0.4rem;
 }
 
-/*register modal buttons*/
-
 #register-buttons {
     display: flex; 
     justify-content: center;
@@ -390,40 +386,10 @@ a:hover {
 }
 
 button[type="submit"]:hover {
-    background-color: rgba(107, 110, 111, 0.8); /* Add a hover color */
-    color: whitesmoke; /* Optional: Change text color */
+    background-color: rgba(107, 110, 111, 0.8);
 }
 
-#map {
-    border-radius: 1rem;
-    border-style: double;
-    border-color: rgba(160, 110, 9, 0.647);
-    width: 90vh;
-    height: 80vh;
-    padding: auto;
-    margin-top: 1rem;
-    margin: 0.5rem;
-    padding: 1rem;
-}
-
-#selected-restaurant {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    width: 82vh;
-    height: 5vh;
-    margin: 0.5rem;
-    background-color: whitesmoke;
-    border-radius: 0.3rem;
-    border-style: double;
-    border-color: rgba(160, 110, 9, 0.647);
-}
-
-#selected-restaurant h4 {
-    padding: 0.5rem;
-    font-weight: 500;
-}
-
+/* DAILY & WEEKLY MENU LINKS AND MODAL CSS*/
 #menu-links {
     display: flex;
     flex-direction: row;
@@ -472,4 +438,36 @@ button[type="submit"]:hover {
 #week-menu::backdrop {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(3px);
+}
+
+/* MAP CSS*/
+#map {
+    border-radius: 1rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    width: 90vh;
+    height: 80vh;
+    padding: auto;
+    margin-top: 1rem;
+    margin: 0.5rem;
+    padding: 1rem;
+}
+
+/* CONTAINER FOR SELECTED RESTAURANT*/
+#selected-restaurant {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 82vh;
+    height: 5vh;
+    margin: 0.5rem;
+    background-color: whitesmoke;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+}
+
+#selected-restaurant h4 {
+    padding: 0.5rem;
+    font-weight: 500;
 }
