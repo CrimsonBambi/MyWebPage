@@ -291,7 +291,7 @@ a:hover {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     width: auto;
     height: auto;
-    max-width: 55%;
+    max-width: 45%;
     max-height: 55%;
     animation: fadeIn 0.3s ease-out;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -408,7 +408,7 @@ button[type="submit"]:hover {
 }
 
 #today-menu {
-    width: 130vh;
+    width: 110vh;
     height: 80vh;
     border: none;
     border-radius: 0.3rem;
@@ -425,7 +425,7 @@ button[type="submit"]:hover {
 }
 
 #week-menu {
-    width: 130vh;
+    width: 110vh;
     height: 80vh;
     border-radius: 0.3rem;
     border-style: double;
@@ -446,7 +446,7 @@ button[type="submit"]:hover {
     border-style: double;
     border-color: rgba(160, 110, 9, 0.647);
     width: 90vh;
-    height: 80vh;
+    height: 82vh;
     padding: auto;
     margin-top: 1rem;
     margin: 0.5rem;

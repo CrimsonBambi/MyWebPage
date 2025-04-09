@@ -172,7 +172,36 @@ searchButton.addEventListener('click', () => {
     });
 });
 
-//########################## html funktiot ##########################################
+//########################## html functions ##########################################
+
+const defaultIcon = L.icon({
+  iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png', // Default marker icon
+  iconSize: [30, 45],
+  iconAnchor: [15, 45],
+  popupAnchor: [0, -40]
+});
+
+const highlightedIcon = L.icon({
+    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png', // Highlighted marker icon
+    iconSize: [30, 45],
+    iconAnchor: [15, 45],
+    popupAnchor: [0, -40]
+});
+
+// highlights selected restaurants marker and clears previously #selected-restaurant container
+function highlightMarker(restaurantId) {
+  const marker = markers.get(restaurantId);
+  label.textContent = '';
+  if (marker) {  
+    markers.forEach(m => m.setIcon(defaultIcon)); // Reset all markers to the default icon
+    marker.setIcon(highlightedIcon).openPopup(); // Highlight the clicked marker and open its popup
+
+    map.flyTo(marker.getLatLng(), 15, { // Adjust the map view to ensure the marker is fully visible
+      animate: true,
+      duration: 0.5 // Animation duration in seconds
+    });
+  }   
+};
 
 // creates table and appends all found restaurants
 function createRestaurantCells(restaurant, tr) {
@@ -183,9 +212,26 @@ function createRestaurantCells(restaurant, tr) {
   tr.append(nameTd, cityTd);
 };
 
+// generates a table of restaurants + event for clicked restaurant option
+function createTable() {
+  for (const restaurant of restaurants) {
+    const tr = document.createElement('tr');
+    tr.addEventListener('click', () => {
+        highlightMarker(restaurant._id); // highlight the restaurant on the map
+        console.log(restaurant._id);
+        const labelH = document.createElement('h4'); // creates & displays selected restaurant
+        labelH.innerText = restaurant.name;
+        label.append(labelH);
+    });
+
+    createRestaurantCells(restaurant, tr);
+    table.appendChild(tr);
+  }
+};
+
 // creates html for menu modal (restaurant info)
 function createModalHtml(restaurant, modal) {
-  const nameH3 = document.createElement('h3');
+  const nameH3 = document.createElement('h2');
   nameH3.innerText = restaurant.name;
   const addressP = document.createElement('p');
   addressP.innerText = `${restaurant.address}, puhelin: ${restaurant.phone}`;
@@ -214,7 +260,8 @@ function createWeeklyMenuHtml(days) {
   for (const day of days) {
       html += `
       <section class="day-menu">
-          <h4>${day.date}</h4>
+        <br>
+        <h2>${day.date}</h2>
       `;
 
     if (day.courses && day.courses.length > 0) {
@@ -233,6 +280,18 @@ function createWeeklyMenuHtml(days) {
     html += '</section>';
   }
   return html;
+};
+
+// creates city options for search bar
+function cityOption() {
+  const cities = Array.from(new Set(restaurants.map(restaurant => restaurant.city))); 
+  cities.sort();
+  cities.forEach(city => {
+    const option = document.createElement('option');
+    option.value = city;
+    option.innerText = city;
+    menuCity.appendChild(option);
+  });
 };
   
 // gets every restaurant
@@ -269,37 +328,20 @@ function sortRestaurants() {
   });
 };
 
-const defaultIcon = L.icon({
-  iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png', // Default marker icon
-  iconSize: [30, 45],
-  iconAnchor: [15, 45],
-  popupAnchor: [0, -40]
-});
-
-const highlightedIcon = L.icon({
-    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png', // Highlighted marker icon
-    iconSize: [30, 45],
-    iconAnchor: [15, 45],
-    popupAnchor: [0, -40]
-});
-
+// initializes the a map centered on the user's current location
 function success(pos) {
   const crd = pos.coords;
+  map = L.map('map').setView([crd.latitude, crd.longitude], 13); // user location
 
-  // Initialize the Leaflet map centered on the user's location
-  map = L.map('map').setView([crd.latitude, crd.longitude], 13);
-
-  // Add OpenStreetMap tiles
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // Add OpenStreetMap tiles
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Add a custom marker for the user's location
-  const userIcon = L.icon({
-    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png', // Path to your custom marker image
-    iconSize: [30, 45], // Adjust the size of the marker
-    iconAnchor: [15, 45], // Anchor point of the marker
-    popupAnchor: [0, -40], // Position of the popup relative to the marker
+  const userIcon = L.icon({ 
+    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png',
+    iconSize: [30, 45], 
+    iconAnchor: [15, 45], 
+    popupAnchor: [0, -40],
   });
 
   L.marker([crd.latitude, crd.longitude], { icon: userIcon })
@@ -307,72 +349,22 @@ function success(pos) {
     .bindPopup(`<b>Your Location</b><br>`)
     .openPopup();
 
-  // Add markers after restaurants are loaded
-  if (restaurants.length > 0) {
+  if (restaurants.length > 0) {  // Add markers after restaurants are loaded
     addMarkersToMap();
   }
 };
 
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-};
-
-function highlightMarker(restaurantId) {
-  const marker = markers.get(restaurantId);
-  label.textContent = ''; // empties the h4 from #selected-restaurant
-  if (marker) {
-    // Reset all markers to the default icon
-     markers.forEach(m => m.setIcon(defaultIcon));
-
-    // Highlight the clicked marker and open its popup
-    marker.setIcon(highlightedIcon).openPopup();
-
-    // Adjust the map view to ensure the marker is fully visible
-    map.flyTo(marker.getLatLng(), 15, {
-      animate: true,
-      duration: 0.5 // Animation duration in seconds
-    });
-  }   
-};
-
-function createTable() {
-  for (const restaurant of restaurants) {
-    const tr = document.createElement('tr');
-    tr.addEventListener('click', () => {
-        highlightMarker(restaurant._id); // Call highlightMarker with the restaurant's ID
-        console.log(restaurant._id);
-
-        const labelH = document.createElement('h4');
-        labelH.innerText = restaurant.name;
-        label.append(labelH);
-    });
-
-    createRestaurantCells(restaurant, tr);
-    table.appendChild(tr);
-  }
-};
-
-function cityOption() {
-  const cities = Array.from(new Set(restaurants.map(restaurant => restaurant.city))); 
-  cities.sort();
-  cities.forEach(city => {
-    const option = document.createElement('option');
-    option.value = city;
-    option.innerText = city;
-    menuCity.appendChild(option);
-  });
-};
-
+// creates marker on the map for every restaurant
 function addMarkersToMap() {
   restaurants.forEach(restaurant => {
     const marker = L.marker([restaurant.location.coordinates[1], restaurant.location.coordinates[0]], { icon: defaultIcon })
       .addTo(map)
       .bindPopup(`<h3>${restaurant.name}</h3><p>${restaurant.address}</p>`);
-
-      markers.set(restaurant._id, marker); // Store marker in the map
+      markers.set(restaurant._id, marker); // Store marker in the map for highlighting
   });
 };
 
+// specifies settings for how the browser should retrieve the user's location
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -381,6 +373,10 @@ const options = {
 
 // Starts the location search
 navigator.geolocation.getCurrentPosition(success, error, options);
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+};
   
 async function main() {
   try {
