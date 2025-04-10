@@ -338,7 +338,7 @@ function success(pos) {
   }).addTo(map);
 
   const userIcon = L.icon({ 
-    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png',
+    iconUrl: 'http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png',
     iconSize: [30, 45], 
     iconAnchor: [15, 45], 
     popupAnchor: [0, -40],
