@@ -1,8 +1,11 @@
-import { fetchData } from "./lib/fetchData.js";
+'use strict';
 
-const apiUrl = 'https://media2.edu.metropolia.fi/restaurant/api/v1';
+import { login } from "../api/login.js";
+import { getRestaurants, getDailyMenu, getWeeklyMenu, error } from "../api/restaurant.js";
+
+
 const table = document.getElementById('restaurant-table');
-let restaurants = [];
+export const restaurants = []; // Export the restaurants array
 const menuCity = document.getElementById('menu-city');
 const searchButton = document.getElementById('search-button');
 let map; // Declare map globally
@@ -28,6 +31,81 @@ const openRegister = document.getElementById('open-register-modal');
 const closeRegister = document.getElementById('close-register');
 const registerModal = document.getElementById('register-modal');
 //###########################################################
+
+const loginForm = document.getElementById('login-form');
+const logAway = document.getElementById('logout-link');
+const profileLink = document.getElementById('profile-link');
+const logout = document.getElementById('logout-link');
+
+// Check if user is already logged in when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    showLinks(); // Show profile and logout links if logged in
+  } else {
+    logAway(); // Optionally hide links if not logged in
+  }
+});
+
+// login
+loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
+  const token = await login(username.value, password.value);
+
+  if (token) {
+    showLinks();
+    loginModal.close(); // Close dialog only if login succeeded
+  }
+});
+
+// logout
+logAway.addEventListener('click', async (event) => { 
+
+  localStorage.removeItem('token');
+
+  openLogin.style.display = 'block';
+  logout.style.display = 'none';
+  profileLink.style.display = 'none';
+
+  alert('Logged out');
+});
+
+
+// makes profile and logout links visible
+function showLinks() {
+  if (profileLink && logout) {
+    profileLink.style.display = 'block';
+    logout.style.display = 'block';
+    openLogin.style.display = 'none';
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // open todays menu
 openDayMenu.addEventListener('click', async (event) => {
@@ -294,32 +372,7 @@ function cityOption() {
   });
 };
   
-// gets every restaurant
-async function getRestaurants() {
-  try {
-    restaurants = await fetchData(apiUrl + '/restaurants');
-  } catch (error) {
-    console.error(error);
-  }
-};
-  
-// gets restaurants daily menu
-async function getDailyMenu(id, lang) {
-  try {
-    return await fetchData(`${apiUrl}/restaurants/daily/${id}/${lang}`);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
-// gets restaurants weekly meny
-async function getWeeklyMenu(id, lang) {
-  try {
-    return await fetchData(`${apiUrl}/restaurants/weekly/${id}/${lang}`);
-  } catch (error) {
-    console.error(error);
-  }
-};
  
 // sorts restaurants order
 function sortRestaurants() {
@@ -374,9 +427,7 @@ const options = {
 // Starts the location search
 navigator.geolocation.getCurrentPosition(success, error, options);
 
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-};
+
   
 async function main() {
   try {
@@ -391,3 +442,5 @@ async function main() {
 };
   
 main();
+
+export default {restaurants};

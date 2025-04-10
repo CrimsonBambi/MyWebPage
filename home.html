@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="author" content="Gerli Hirv" />
-    <script src="wep_page.js" type="module" defer></script>
+    <script src="public/wep_page.js" type="module" defer></script>
     <title>Studen Restaurant Finder</title>
     <link rel="stylesheet" href="CSS/home.css">
 
@@ -16,10 +16,11 @@
         <nav id="main-nav">
             <img id="logo" src="CSS/logo.png" alt="Logo">
             <h1>Student Restaurants</h1>
-            <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="profile.html">My Profile</a></li>
-                <li><a href="#" id="open-login-modal" class="nav-button">Login</a></li>
+            <ul id="nav-links">
+                <li><a href="home.html" id="home-loink">Home</a></li>
+                <li><a href="profile.html" id="profile-link" style="display: none;">My Profile</a></li>
+                <li><a href="#" id="open-login-modal" style="display: block;">Login</a></li>
+                <li><a href="#" id="logout-link" style="display: none;">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -58,7 +59,7 @@
     </main>
 
     <footer>
-        <h6> Student Restaurants <strong>2025</strong></h6>
+        <h6><strong>@2025</strong> Copyright: Gerli Hirv</h6>
     </footer>
 
     <dialog id="today-menu">
@@ -94,11 +95,11 @@
             <h2>Registeration</h2>
         <div class="register-input">
             <div id="register-input-left">
-                <input type="text" id="username" name="username" placeholder="Username" required />
+                <input type="text"  name="username" placeholder="Username" required />
                 <input type="text" id="eamil" name="email" placeholder="Email" required />
             </div>
             <div id="register-input-right">
-                <input type="password" id="password" placeholder="Password" required />
+                <input type="password"  placeholder="Password" required />
                 <input type="password" id="confirm-password" placeholder="Confirm Password" required />
             </div>
         </div>
