@@ -36,6 +36,7 @@ const loginForm = document.getElementById('login-form');
 const logAway = document.getElementById('logout-link');
 const profileLink = document.getElementById('profile-link');
 const logout = document.getElementById('logout-link');
+const welcome = document.getElementById('user-welcome');
 
 // Check if user is already logged in when the page loads
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (token) {
     showLinks(); // Show profile and logout links if logged in
   } else {
-    logAway(); // Optionally hide links if not logged in
+    hideLinks(); // Optionally hide links if not logged in
   }
 });
 
@@ -57,6 +58,7 @@ loginForm.addEventListener('submit', async (event) => {
 
   if (token) {
     showLinks();
+    welcomeUser(username.value);
     loginModal.close(); // Close dialog only if login succeeded
   }
 });
@@ -69,7 +71,7 @@ logAway.addEventListener('click', async (event) => {
   openLogin.style.display = 'block';
   logout.style.display = 'none';
   profileLink.style.display = 'none';
-
+  welcome.style.display = 'none';
   alert('Logged out');
 });
 
@@ -81,6 +83,22 @@ function showLinks() {
     logout.style.display = 'block';
     openLogin.style.display = 'none';
   }
+};
+
+function hideLinks() {
+  localStorage.removeItem('token');
+
+  openLogin.style.display = 'block';
+  logout.style.display = 'none';
+  profileLink.style.display = 'none';
+  welcome.style.display = 'none';
+};
+
+function welcomeUser(username) {
+  const text = document.getElementById('welcome-text');
+
+  text.textContent = `Welcome, ${username}!`
+  welcome.style.display = 'flex';
 };
 
 

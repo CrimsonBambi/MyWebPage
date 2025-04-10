@@ -1,6 +1,6 @@
-html, main {
+/*html, main {
     height: 100%;
-}
+}*/
 
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,6 +49,25 @@ aside {
 
 .restaurant-container h2 {
     color: whitesmoke;
+}
+
+#user-welcome {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: whitesmoke;
+    border-radius: 0.3rem;
+    width: 80vh;
+    height: auto;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+}
+
+#user-welcome h2 {
+    color: black;
+    padding: 0.3rem;
+    font-style: italic;
+    margin-left: 2rem;
 }
 
 /* CONTAINER FOR DISPLAYED RESTAURAN TABLE*/
@@ -495,4 +514,14 @@ footer {
 footer h6 {
     color: whitesmoke;
     font-weight: 500;
+}
+
+#avatar {
+    margin: 1rem;
+    width: 180px;
+    height: 180px;
+    border-style: groove;
+    border-color: rgba(160, 110, 9, 0.712);
+    border-radius: 50%;
+    object-fit: cover;
 }

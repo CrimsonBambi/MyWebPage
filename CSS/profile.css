@@ -1,21 +1,54 @@
-#main-nav {
-    background: rgba(51, 48, 48, 0.737);
-    border-radius: 1rem;
-    display: flex;          /* Align items in a row */
-    align-items: center;    /* Vertically center items */
-    justify-content: space-between; /* Optional: spread out the items */
-    padding: 1rem;          /* Add padding inside nav for spacing */
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(pexels-enginakyurt-1435904.jpg);
+    background-size: cover; /* Adjust the size of the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-position: center; /* Center the background image */
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+    margin-top: 2rem;
+    background-color: rgba(51, 48, 48, 0.737);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
     backdrop-filter: blur(5px);
 }
 
-/* Remove default list styles from ul */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* NAVIGATIOON BAR CSS*/
+#main-nav {
+    background: rgba(51, 48, 48, 0.737);
+    border-radius: 1rem;
+    display: flex;          
+    align-items: center;    
+    justify-content: space-between; 
+    padding: 1rem;          
+    backdrop-filter: blur(5px);
+}
+
 nav ul {
     font-size: 1.2rem;
     font-weight: 600;
-    display: flex;          /* Display list items in a row */
-    list-style-type: none;  /* Remove default list bullets */
-    padding: 0;             /* Remove padding from the ul */
-    margin: 0;              /* Remove margin */
+    display: flex;          
+    list-style-type: none;  
+    padding: 0;            
+    margin: 0;             
 }
 
 nav ul li {
@@ -42,43 +75,6 @@ a:hover {
     text-decoration: underline;
 }
 
-body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url(pexels-enginakyurt-1435904.jpg);
-    background-size: cover; /* Adjust the size of the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-    background-position: center; /* Center the background image */
-}
-
-main {
-    display: flex;
-    justify-content: center;
-    height: 80vh;
-    margin-top: 2rem;
-    background-color: rgba(51, 48, 48, 0.737);
-    border-radius: 1rem;
-    backdrop-filter: blur(5px);
-}
-
-.main-container {
-    display: flex;
-    background-color: whitesmoke;
-    border-radius: 1rem;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    width: 120vh;
-}
-
-#avatar {
-    margin-top: 1rem;
-    width: 180px;
-    height: 180px;
-    border-style: groove;
-    border-color: rgba(160, 110, 9, 0.712);
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 section {
     display: flex;
     flex-direction: column;
@@ -102,3 +98,28 @@ section {
     border-radius: 0.8rem;
 }
 
+#avatar {
+    margin-top: 1rem;
+    width: 180px;
+    height: 180px;
+    border-style: groove;
+    border-color: rgba(160, 110, 9, 0.712);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* FOOTER*/
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(51, 48, 48, 0.737);
+    border-top-style: groove ;
+    border-color: black;
+}
+
+footer h6 {
+    color: whitesmoke;
+    font-weight: 500;
+}
