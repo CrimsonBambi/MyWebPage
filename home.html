@@ -17,8 +17,8 @@
             <img id="logo" src="CSS/logo.png" alt="Logo">
             <h1>Student Restaurants</h1>
             <ul id="nav-links">
-                <li><a href="home.html" id="home-loink">Home</a></li>
-                <li><a href="profile.html" id="profile-link" style="display: none;">Profile</a></li>
+                <li><a href="home.html" id="home-link">Home</a></li>
+                <li><a href="#" id="profile-link" style="display: none;">Profile</a></li>
                 <li><a href="#" id="open-login-modal" style="display: block;">Login</a></li>
                 <li><a href="#" id="logout-link" style="display: none;">Logout</a></li>
             </ul>
@@ -68,6 +68,7 @@
     <footer>
         <h6><strong>@2025</strong> Copyright: Gerli Hirv</h6>
     </footer>
+        <!-- All modals are under here -->
 
     <dialog id="today-menu">
         <button type="button" id="close-today-menu">&#10005;</button>
@@ -102,15 +103,40 @@
             <h2>Registeration</h2>
         <div class="register-input">
             <div id="register-input-left">
-                <input type="text"  name="username" placeholder="Username" required />
-                <input type="text" id="eamil" name="email" placeholder="Email" required />
+                <input type="text" id="register-username" name="username" placeholder="Username" required />
+                <input type="email" id="register-email" name="email" placeholder="Email" required />
             </div>
             <div id="register-input-right">
-                <input type="password"  placeholder="Password" required />
-                <input type="password" id="confirm-password" placeholder="Confirm Password" required />
+                <input type="password" id="register-password" placeholder="Password" required />
+                <input type="password" id="confirm-register-password" placeholder="Confirm Password" required />
             </div>
         </div>
         <button type="submit">Register</button>
+        </form>
+    </dialog>
+
+    <dialog id="profile-modal">
+        <button type="button" id="close-profile">&#10005;</button>
+        <div id="profile-container">
+            <img id="profile-avatar" alt="Avatar">
+            <section id="info">
+                <!-- user info here -->
+            </section>
+            <a href="#" id="open-settings">
+                <img id="settings" src="CSS/settings.png" alt="Settings">
+            </a>
+          </div>
+    </dialog>
+
+    <dialog id="setting-modal">
+        <button type="button" id="close-settings">&#10005;</button>
+        <form method="dialog" id="update-profile">
+            <h2>Update Profile</h2>
+            <input type="text" id="update-username" name="username" placeholder="New Username">
+            <input type="email" id="update-email" name="email" placeholder="New Email">
+            <input type="password" id="update-password" name="password" placeholder="New Password">
+            <input type="password" id="confirm-update-password" name="password" placeholder="New Password">
+            <button type="submit">Save Changes</button>
         </form>
     </dialog>
   </body>

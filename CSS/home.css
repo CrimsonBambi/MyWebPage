@@ -516,7 +516,57 @@ footer h6 {
     font-weight: 500;
 }
 
-#avatar {
+/* PROFILE MODAL*/
+#profile-modal {
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    background-color: whitesmoke;
+    animation: fadeIn 0.3s ease-out;
+    transition: transform 0.3s ease;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#profile-modal::backdrop {
+background: rgba(0, 0, 0, 0.4);
+backdrop-filter: blur(3px);
+}
+
+#profile-avatar {
+    margin: 1rem;
+    width: 180px;
+    height: 180px;
+    border-style: groove;
+    border-color: rgba(160, 110, 9, 0.712);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+    border-radius: 1rem;
+    margin: 0.5rem;
+    padding: 0.2rem;
+}
+
+#settings {
+    margin-top: 2rem;
+    margin-left: 20rem;
+    width: 2rem;
+    height: auto;
+}
+
+#settings:hover {
+    background-color: rgba(160, 110, 9, 0.401);
+    border-radius: 0.8rem;
+}
+
+#avatar { /*avatar on the welcome*/
     margin: 1rem;
     width: 180px;
     height: 180px;

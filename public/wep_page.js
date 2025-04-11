@@ -1,7 +1,8 @@
 'use strict';
 
-import { login } from "../api/login.js";
+import { login, getCurrentUserProfile, usernameAvailability, updateUserData } from "../api/login.js";
 import { getRestaurants, getDailyMenu, getWeeklyMenu, error } from "../api/restaurant.js";
+import { registerUser } from "../api/register.js";
 
 
 const table = document.getElementById('restaurant-table');
@@ -11,6 +12,15 @@ const searchButton = document.getElementById('search-button');
 let map; // Declare map globally
 const markers = new Map(); // Store markers with restaurant IDs as keys
 const label = document.getElementById('selected-restaurant');
+
+const loginForm = document.getElementById('login-form');
+const logAway = document.getElementById('logout-link');
+const logout = document.getElementById('logout-link');
+const profileLink = document.getElementById('profile-link');
+const welcome = document.getElementById('user-welcome');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const token = localStorage.getItem('token');
 
 // menu link reference
 const openDayMenu = document.getElementById('open-today-menu');
@@ -30,19 +40,24 @@ const loginModal = document.getElementById('login-modal');
 const openRegister = document.getElementById('open-register-modal');
 const closeRegister = document.getElementById('close-register');
 const registerModal = document.getElementById('register-modal');
+// profile link reference
+const openProfile = document.getElementById('profile-link');
+const closeProfile = document.getElementById('close-profile');
+const profileModal = document.getElementById('profile-modal');
 //###########################################################
 
-const loginForm = document.getElementById('login-form');
-const logAway = document.getElementById('logout-link');
-const profileLink = document.getElementById('profile-link');
-const logout = document.getElementById('logout-link');
-const welcome = document.getElementById('user-welcome');
 
 // Check if user is already logged in when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    showLinks(); // Show profile and logout links if logged in
+document.addEventListener('DOMContentLoaded', async (event) => {
+  event.preventDefault();
+  const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
+
+  if (storedToken) {
+    const name = await getCurrentUserProfile(storedToken);
+    if (name) {
+      welcomeUser(name.username);
+      showLinks();
+    }
   } else {
     hideLinks(); // Optionally hide links if not logged in
   }
@@ -51,12 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // login
 loginForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+  const data = await login(username.value, password.value);
 
-  const username = document.getElementById('username');
-  const password = document.getElementById('password');
-  const token = await login(username.value, password.value);
-
-  if (token) {
+  if (data) {
+    localStorage.setItem('username', username.value); // Store the username in localStorage
     showLinks();
     welcomeUser(username.value);
     loginModal.close(); // Close dialog only if login succeeded
@@ -64,9 +77,10 @@ loginForm.addEventListener('submit', async (event) => {
 });
 
 // logout
-logAway.addEventListener('click', async (event) => { 
+logAway.addEventListener('click', () => { 
 
-  localStorage.removeItem('token');
+  //localStorage.removeItem('token');
+  localStorage.clear();
 
   openLogin.style.display = 'block';
   logout.style.display = 'none';
@@ -101,7 +115,47 @@ function welcomeUser(username) {
   welcome.style.display = 'flex';
 };
 
+// register
+const registerForm = document.getElementById('register-form');
 
+registerForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const username = document.getElementById('register-username').value.trim();
+  const email = document.getElementById('register-email').value.trim();
+  const password = document.getElementById('register-password').value;
+  const confirmPassword = document.getElementById('confirm-register-password').value;
+
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  if (!emailPattern.test(email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
+
+    if (password !== confirmPassword) {
+    alert("Passwords do not match. Please try again.");
+    return;
+  }
+
+  // Check if the username is available
+  const isUsernameAvailable = await usernameAvailability(username);
+  if (!isUsernameAvailable) {
+    alert('Username is already taken. Please choose a different one.');
+    return; // Prevent form submission if username is not available // Prevent form submission if username is not available
+  }
+
+  const userData = { username, email, password };
+
+  try {
+    const response = await registerUser(userData);
+    console.log('Registration success:', response);
+    alert('Registration successful! You can now log in.');
+    registerModal.close();
+  } catch (error) {
+    console.error('Registration error:', error);
+    alert(error.message || 'An error occurred during registration. Please try again.');
+  }
+});
 
 
 
@@ -163,7 +217,7 @@ openDayMenu.addEventListener('click', async (event) => {
 });
 
 // close today menu
-closeTodayModal.addEventListener('click', (event) => {
+closeTodayModal.addEventListener('click', () => {
   todayModal.close();
 });
 
@@ -227,10 +281,139 @@ openRegister.addEventListener('click', (event) => {
     registerModal.showModal(); 
 });
 
-// Close the login modal 
+// Close the register modal 
 closeRegister.addEventListener('click', () => {
     registerModal.close(); 
 });
+
+// open profile
+openProfile.addEventListener('click', async (event) => {
+  event.preventDefault();
+
+  const text = document.getElementById('info');
+  const avatar = document.getElementById('profile-avatar');
+
+  const name = document.createElement('h5');
+  const email = document.createElement('h5');
+
+  const storedToken = localStorage.getItem('token');
+  console.log(storedToken);
+
+  if (storedToken) {
+    const userData = await getCurrentUserProfile(storedToken);
+    if (userData) {
+      name.textContent = `Username: ${userData.username}`;
+      email.textContent = `Email: ${userData.email}`;
+
+      // Set avatar image if available
+      if (userData.avatar) {
+        avatar.src = userData.avatar;
+      } else {
+        avatar.src = 'CSS/avatar.png'; // fallback default
+      }
+      text.innerHTML = '';
+      text.append(name, email);
+    }
+  }
+  profileModal.showModal();
+});
+
+// close profile
+closeProfile.addEventListener('click', () => {
+  profileModal.close();
+});
+
+const openSettings = document.getElementById('open-settings');
+const settingModal = document.getElementById('setting-modal');
+const closeSettings = document.getElementById('close-settings');
+
+openSettings.addEventListener('click', (event) => {
+  event.preventDefault();
+  settingModal.showModal();
+});
+
+closeSettings.addEventListener('click', () => {
+  settingModal.close();
+})
+
+const updateProfile = document.getElementById('update-profile');
+const updateUsername = document.getElementById('update-username')
+const updateEmail = document.getElementById('update-email')
+const updatePassword = document.getElementById('update-password')
+const confirmUpdatePassword = document.getElementById('confirm-update-password')
+
+updateProfile.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
+
+  if (storedToken) {
+    const username = updateUsername.value.trim();
+    const email = updateEmail.value.trim();
+    const password = updatePassword.value;
+    const confirmPassword = confirmUpdatePassword.value;
+
+    const updates = {}; // fields to be updated
+
+    // Username validation
+    if (username) {
+      const availability = await usernameAvailability(username);
+      if (!availability) {
+        alert('Username is already taken.');
+        return;
+      }
+      updates.username = username;
+    }
+
+    // Email validation
+    if (email) {
+      const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!isValidEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      updates.email = email;
+    }
+
+    // Password validation
+    if (password || confirmPassword) {
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+      }
+      if (password.length < 6) {
+        alert('Password should be at least 6 characters.');
+        return;
+      }
+      updates.password = password;
+    }
+
+    if (Object.keys(updates).length === 0) { // If no fields filled
+      alert('Please fill out at least one field to update.');
+      return;
+    }
+
+    try {
+      console.log(`About to update user with token ${storedToken}`);
+      const updatedUser = await updateUserData(updates, storedToken); // You call your update function here
+      if (updatedUser) {
+        if (updatedUser.username) {
+          localStorage.setItem('username', updatedUser.username); // Replace saved username 
+        }
+        alert('Profile updated successfully!');
+      } else {
+        console.log('User was not uptated');
+      }
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      alert('Failed to update profile.');
+    }
+  } 
+});
+
+
+
+
 
 // Event listener for the SEARCH button + updater
 searchButton.addEventListener('click', () => {
