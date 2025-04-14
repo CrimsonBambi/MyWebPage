@@ -385,6 +385,8 @@ updateProfile.addEventListener('submit', async (event) => {
         alert('Password should be at least 6 characters.');
         return;
       }
+
+      console.log("password", password)
       updates.password = password;
     }
 
