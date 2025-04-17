@@ -29,13 +29,15 @@
         <div class="restaurant-container">
             <div id="user-welcome" style="display: none;">
                 <section>
-                    <img id="avatar" src="CSS/avatar.png" alt="avatar"> 
+                    <img id="avatar" alt="avatar"> 
                 </section>
                 <h2 id="welcome-text"></h2>
             </div>
+
             <h2>Find our restaurants</h2>
             <div class="finder">
                 <select id="menu-city">
+                    <option disabled selected>City</option>
                     <!--<option value="helsinki">City</option   style="display: none;">-->
                 </select>
                 <button type="button" id="search-button">Search</button>
@@ -45,6 +47,7 @@
                 <li><a href="#" id="open-week-menu" ><strong>Weekly Menu</strong></a></li>
             </div>
             <div id="selected-restaurant">
+                <label>Selected Restaurant</label>
                 <!-- Selected restaurant name will be displayed here -->
             </div>
             
@@ -123,7 +126,7 @@
                 <!-- user info here -->
             </section>
             <a href="#" id="open-settings">
-                <img id="settings" src="CSS/settings.png" alt="Settings">
+                <img id="settings-img" src="CSS/settings.png" alt="Settings">
             </a>
           </div>
     </dialog>
@@ -135,8 +138,11 @@
             <input type="text" id="update-username" name="username" placeholder="New Username">
             <input type="email" id="update-email" name="email" placeholder="New Email">
             <input type="password" id="update-password" name="password" placeholder="New Password">
-            <input type="password" id="confirm-update-password" name="password" placeholder="New Password">
-            <button type="submit">Save Changes</button>
+            <input type="password" id="confirm-update-password" name="password" placeholder="Confirm Password">
+            <label><strong>Image</strong></label>
+            <input type="file" id="update-avatar" accept="image/*">
+            <button type="submit" id="submit-update-button">Save Changes</button>
+            <h6>Edit the fields you would like to change.</h6>
         </form>
     </dialog>
   </body>

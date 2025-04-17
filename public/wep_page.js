@@ -1,12 +1,12 @@
 'use strict';
 
 import { login, getCurrentUserProfile, usernameAvailability, updateUserData } from "../api/login.js";
+import {uploadAvatarFile } from "../api/avatar.js";
 import { getRestaurants, getDailyMenu, getWeeklyMenu, error } from "../api/restaurant.js";
 import { registerUser } from "../api/register.js";
 
-
-const table = document.getElementById('restaurant-table');
 export const restaurants = []; // Export the restaurants array
+const table = document.getElementById('restaurant-table');
 const menuCity = document.getElementById('menu-city');
 const searchButton = document.getElementById('search-button');
 let map; // Declare map globally
@@ -108,10 +108,23 @@ function hideLinks() {
   welcome.style.display = 'none';
 };
 
-function welcomeUser(username) {
+// welcome window when logged in
+async function welcomeUser(username) {
   const text = document.getElementById('welcome-text');
+  const avatar = document.getElementById('avatar');
+  const userData = await getCurrentUserProfile(token);
 
-  text.textContent = `Welcome, ${username}!`
+  if (!userData) {
+    console.error('Failed to load user data. Please log in again.');
+    alert('Failed to load user data. Please log in again.');
+    hideLinks(); // Hide links if user data cannot be fetched
+    return;
+  }
+
+  avatar.src = userData.avatar 
+    ? `https://media2.edu.metropolia.fi/restaurant/uploads/${userData.avatar}` 
+    : 'CSS/avatar.png';
+  text.textContent = `Welcome, ${username}!`;
   welcome.style.display = 'flex';
 };
 
@@ -277,7 +290,6 @@ closeLogin.addEventListener('click', () => {
 // Open the register modal
 openRegister.addEventListener('click', (event) => {
     event.preventDefault();
-    loginModal.close();
     registerModal.showModal(); 
 });
 
@@ -307,7 +319,7 @@ openProfile.addEventListener('click', async (event) => {
 
       // Set avatar image if available
       if (userData.avatar) {
-        avatar.src = userData.avatar;
+        avatar.src = `https://media2.edu.metropolia.fi/restaurant/uploads/${userData.avatar}`;
       } else {
         avatar.src = 'CSS/avatar.png'; // fallback default
       }
@@ -329,6 +341,8 @@ const closeSettings = document.getElementById('close-settings');
 
 openSettings.addEventListener('click', (event) => {
   event.preventDefault();
+  document.getElementById('update-username').value = '';
+  document.getElementById('update-password').value = '';
   settingModal.showModal();
 });
 
@@ -337,15 +351,18 @@ closeSettings.addEventListener('click', () => {
 })
 
 const updateProfile = document.getElementById('update-profile');
-const updateUsername = document.getElementById('update-username')
-const updateEmail = document.getElementById('update-email')
-const updatePassword = document.getElementById('update-password')
-const confirmUpdatePassword = document.getElementById('confirm-update-password')
+const updateUsername = document.getElementById('update-username');
+const updateEmail = document.getElementById('update-email');
+const updatePassword = document.getElementById('update-password');
+const confirmUpdatePassword = document.getElementById('confirm-update-password');
+const avatarInput = document.getElementById('update-avatar');
 
+// Update profile 
 updateProfile.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
+  const file = avatarInput.files[0]; // Get the selected file
 
   if (storedToken) {
     const username = updateUsername.value.trim();
@@ -353,7 +370,7 @@ updateProfile.addEventListener('submit', async (event) => {
     const password = updatePassword.value;
     const confirmPassword = confirmUpdatePassword.value;
 
-    const updates = {}; // fields to be updated
+    const updates = {}; // Fields to be updated
 
     // Username validation
     if (username) {
@@ -385,9 +402,18 @@ updateProfile.addEventListener('submit', async (event) => {
         alert('Password should be at least 6 characters.');
         return;
       }
-
-      console.log("password", password)
       updates.password = password;
+    }
+
+    // Upload avatar if a file was selected
+    if (avatarInput) {
+      try {
+        const uploadedFilename = await uploadAvatarFile(file, storedToken);
+        updates.avatar = uploadedFilename; // Add the uploaded filename to updates
+      } catch (error) {
+        alert('Failed to upload avatar. Please try again.');
+        return;
+      }
     }
 
     if (Object.keys(updates).length === 0) { // If no fields filled
@@ -397,20 +423,19 @@ updateProfile.addEventListener('submit', async (event) => {
 
     try {
       console.log(`About to update user with token ${storedToken}`);
-      const updatedUser = await updateUserData(updates, storedToken); // You call your update function here
+      const updatedUser = await updateUserData(updates, storedToken); // Call the update function
       if (updatedUser) {
         if (updatedUser.username) {
-          localStorage.setItem('username', updatedUser.username); // Replace saved username 
+          localStorage.setItem('username', updatedUser.username); // Replace saved username
         }
         alert('Profile updated successfully!');
-      } else {
-        console.log('User was not uptated');
+        location.reload();
       }
     } catch (err) {
       console.error('Error updating profile:', err);
       alert('Failed to update profile.');
     }
-  } 
+  }
 });
 
 
