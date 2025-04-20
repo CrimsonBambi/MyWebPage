@@ -14,6 +14,7 @@ async function getRestaurants() {
   }
 };
 
+// gets restaurant data by id
 async function getRestaurantById(id) {
   try {
     const restaurant = await fetchData(apiUrl + `/restaurants/${id}`);
@@ -45,5 +46,4 @@ function error(err) {
     return console.warn(`ERROR(${err.code}): ${err.message}`);
 };
 
-// Export functions as named exports
 export { getRestaurants, getDailyMenu, getWeeklyMenu, getRestaurantById, error };
