@@ -2,32 +2,35 @@
 
 import { login, getCurrentUserProfile, usernameAvailability, updateUserData } from "../api/login.js";
 import {uploadAvatarFile } from "../api/avatar.js";
-import { getRestaurants, getDailyMenu, getWeeklyMenu, error } from "../api/restaurant.js";
+import { getRestaurants, getDailyMenu, getWeeklyMenu, getRestaurantById, error } from "../api/restaurant.js";
 import { registerUser } from "../api/register.js";
-
 export const restaurants = []; // Export the restaurants array
+
+let map; // Declare map globally
+const markers = new Map(); // Store markers with restaurant IDs as keys
 const table = document.getElementById('restaurant-table');
 const menuCity = document.getElementById('menu-city');
 const searchButton = document.getElementById('search-button');
-let map; // Declare map globally
-const markers = new Map(); // Store markers with restaurant IDs as keys
-const label = document.getElementById('selected-restaurant');
+const label = document.getElementById('selected-restaurant-label');
+const welcome = document.getElementById('user-welcome'); // div
+const logoutLink = document.getElementById('logout-link');
+const updateProfile = document.getElementById('update-profile-form');
+const heart = document.getElementById('heart');
+let selectedRestaurantId = null;
+const faveRest = document.getElementById('favRestaurant-container');
 
-const loginForm = document.getElementById('login-form');
-const logAway = document.getElementById('logout-link');
-const logout = document.getElementById('logout-link');
-const profileLink = document.getElementById('profile-link');
-const welcome = document.getElementById('user-welcome');
-const username = document.getElementById('username');
-const password = document.getElementById('password');
-const token = localStorage.getItem('token');
 
-// menu link reference
+//favourite-restaurant-menu reference 
+const favRestaurantLink = document.getElementById('favRestaurant-container-link'); // link is created in welcomeUser();
+const favRestContent = document.getElementById('favRest-menu-content');
+const favRestModal = document.getElementById('favourite-restaurant-menu');
+const closeFavRest = document.getElementById('close-favRest-menu');
+// todays-menu reference
 const openDayMenu = document.getElementById('open-today-menu');
 const todayContent = document.getElementById('today-menu-content');
 const todayModal = document.getElementById('today-menu');
 const closeTodayModal = document.getElementById('close-today-menu');
-
+// weekly-menu refence
 const openWeekMenu = document.getElementById('open-week-menu');
 const weekContent = document.getElementById('week-menu-content');
 const weekModal = document.getElementById('week-menu');
@@ -36,14 +39,21 @@ const closeWeekModal = document.getElementById('close-week-menu');
 const openLogin = document.getElementById('open-login-modal');
 const closeLogin = document.getElementById('close-login');
 const loginModal = document.getElementById('login-modal');
+const loginForm = document.getElementById('login-form');
 // register references
 const openRegister = document.getElementById('open-register-modal');
 const closeRegister = document.getElementById('close-register');
 const registerModal = document.getElementById('register-modal');
-// profile link reference
+const registerForm = document.getElementById('register-form');
+// settings reference
+const openSettings = document.getElementById('open-settings');
+const settingModal = document.getElementById('setting-modal');
+const closeSettings = document.getElementById('close-settings');
+// profile reference
 const openProfile = document.getElementById('profile-link');
 const closeProfile = document.getElementById('close-profile');
 const profileModal = document.getElementById('profile-modal');
+const profileLink = document.getElementById('profile-link');
 //###########################################################
 
 
@@ -53,84 +63,146 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
 
   if (storedToken) {
-    const name = await getCurrentUserProfile(storedToken);
-    if (name) {
-      welcomeUser(name.username);
-      showLinks();
-    }
+    welcomeUser();
+    showLinks();
   } else {
-    hideLinks(); // Optionally hide links if not logged in
+    hideLinks(); // hide links if not logged in
   }
 });
 
 // login
 loginForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
   const data = await login(username.value, password.value);
 
   if (data) {
-    localStorage.setItem('username', username.value); // Store the username in localStorage
+    localStorage.setItem('token', data.token); // Store the token in localStorage
     showLinks();
-    welcomeUser(username.value);
+    welcomeUser();
     loginModal.close(); // Close dialog only if login succeeded
   }
 });
 
 // logout
-logAway.addEventListener('click', () => { 
+logoutLink.addEventListener('click', () => { 
+  const storedToken = localStorage.getItem('token'); // Retrieve the token before clearing localStorage
 
-  //localStorage.removeItem('token');
-  localStorage.clear();
+  if (storedToken !== null) {
+    console.log('Token before clearing:', storedToken);
+    localStorage.clear(); // Clear all localStorage data
+    selectedRestaurantId = null;
 
-  openLogin.style.display = 'block';
-  logout.style.display = 'none';
-  profileLink.style.display = 'none';
-  welcome.style.display = 'none';
-  alert('Logged out');
+    openLogin.style.display = 'block';
+    logoutLink.style.display = 'none';
+    profileLink.style.display = 'none';
+    welcome.style.display = 'none';
+    faveRest.style.display = 'none';
+
+    console.log('Token after clearing:', localStorage.getItem('token')); // Should log null
+  } else {
+    console.log('You are already logged out.');
+  }
+  console.log('Logged out');
 });
-
 
 // makes profile and logout links visible
 function showLinks() {
-  if (profileLink && logout) {
+  if (profileLink && logoutLink) {
     profileLink.style.display = 'block';
-    logout.style.display = 'block';
+    logoutLink.style.display = 'block';
     openLogin.style.display = 'none';
   }
 };
 
+// hide links if logged out
 function hideLinks() {
   localStorage.removeItem('token');
-
   openLogin.style.display = 'block';
-  logout.style.display = 'none';
+  logoutLink.style.display = 'none';
   profileLink.style.display = 'none';
   welcome.style.display = 'none';
+  faveRest.style.display = 'none';
+  selectedRestaurantId = null;
 };
 
-// welcome window when logged in
-async function welcomeUser(username) {
+
+// welcome logged in user
+async function welcomeUser() {
   const text = document.getElementById('welcome-text');
   const avatar = document.getElementById('avatar');
-  const userData = await getCurrentUserProfile(token);
+  const storedToken = localStorage.getItem('token');
+  const favRestHeader = document.getElementById('favRestHeader');
 
-  if (!userData) {
-    console.error('Failed to load user data. Please log in again.');
+  try {
+    const userData = await getCurrentUserProfile(storedToken);
+    if (userData) {
+      avatar.src = userData.avatar
+        ? `https://media2.edu.metropolia.fi/restaurant/uploads/${userData.avatar}`
+        : 'CSS/avatar.png';
+    }
+    if (userData.favouriteRestaurant) {
+      const restaurantName = await getRestaurantById(userData.favouriteRestaurant);
+      favRestHeader.textContent = 'Check today\'s Menu at your favourite restaurant!';
+      favRestaurantLink.innerText = restaurantName; // Set the restaurant name on the link
+      favRestaurantLink.dataset.restaurantId = userData.favouriteRestaurant; // Store the restaurant ID for later use
+      faveRest.style.display = 'flex';
+    } else {
+      faveRest.style.display = 'none';
+    }
+    text.textContent = `Welcome, ${userData.username}!`;
+    welcome.style.display = 'flex';
+  } catch {
     alert('Failed to load user data. Please log in again.');
     hideLinks(); // Hide links if user data cannot be fetched
     return;
   }
+}
 
-  avatar.src = userData.avatar 
-    ? `https://media2.edu.metropolia.fi/restaurant/uploads/${userData.avatar}` 
-    : 'CSS/avatar.png';
-  text.textContent = `Welcome, ${username}!`;
-  welcome.style.display = 'flex';
-};
+// OPEN FAVOURITE RESTAURANTS MENU
+favRestaurantLink.addEventListener('click', async (event) => {
+  event.preventDefault();
 
-// register
-const registerForm = document.getElementById('register-form');
+  const storedToken = localStorage.getItem('token');
+  const restaurantId = favRestaurantLink.dataset.restaurantId; // Get the restaurant ID from the dataset
 
+  if (!restaurantId) {
+    alert('Favorite restaurant ID not found.');
+    return;
+  }
+
+  try {
+    const restaurant = await getRestaurantById(restaurantId);
+    if (restaurant) {
+      const menu = await getWeeklyMenu(restaurantId, 'fi'); // Await the weekly menu data
+      favRestContent.innerHTML = ''; // Clear previous content
+      createModalHtml(restaurant, favRestContent); // Add restaurant details to the modal
+
+      if (menu && menu.days && menu.days.length > 0) {
+        const menuHtml = createWeeklyMenuHtml(menu.days); // Use 'days' for weekly menu
+        favRestContent.insertAdjacentHTML('beforeend', menuHtml);
+      } else {
+        favRestContent.insertAdjacentHTML('beforeend', '<p>No weekly menu available.</p>');
+      }
+      favRestModal.showModal();
+    } else {
+      favRestContent.innerHTML = '<p>Restaurant information not found.</p>';
+      favRestModal.showModal();
+    }
+  } catch (error) {
+    console.error('Error fetching weekly menu or restaurant information:', error);
+    alert('Failed to fetch the weekly menu or restaurant information. Please try again later.');
+  }
+});
+
+// close favourite restaurant menu 
+closeFavRest.addEventListener('click', () => {
+  favRestModal.close();
+});
+
+// submits register form
 registerForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -169,28 +241,6 @@ registerForm.addEventListener('submit', async (event) => {
     alert(error.message || 'An error occurred during registration. Please try again.');
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // open todays menu
 openDayMenu.addEventListener('click', async (event) => {
@@ -307,15 +357,22 @@ openProfile.addEventListener('click', async (event) => {
 
   const name = document.createElement('h5');
   const email = document.createElement('h5');
+  const favRestaurant = document.createElement('h5');
 
   const storedToken = localStorage.getItem('token');
-  console.log(storedToken);
 
   if (storedToken) {
     const userData = await getCurrentUserProfile(storedToken);
     if (userData) {
       name.textContent = `Username: ${userData.username}`;
       email.textContent = `Email: ${userData.email}`;
+
+      if (userData.favouriteRestaurant) {
+        const restaurant = await getRestaurantById(userData.favouriteRestaurant);
+        favRestaurant.textContent = `Favourite Restaurant: ${restaurant}`;
+      } else {
+        favRestaurant.textContent = 'Favourite Restaurant: -';
+      }
 
       // Set avatar image if available
       if (userData.avatar) {
@@ -324,7 +381,7 @@ openProfile.addEventListener('click', async (event) => {
         avatar.src = 'CSS/avatar.png'; // fallback default
       }
       text.innerHTML = '';
-      text.append(name, email);
+      text.append(name, email, favRestaurant);
     }
   }
   profileModal.showModal();
@@ -335,10 +392,7 @@ closeProfile.addEventListener('click', () => {
   profileModal.close();
 });
 
-const openSettings = document.getElementById('open-settings');
-const settingModal = document.getElementById('setting-modal');
-const closeSettings = document.getElementById('close-settings');
-
+// open settings modal
 openSettings.addEventListener('click', (event) => {
   event.preventDefault();
   document.getElementById('update-username').value = '';
@@ -346,20 +400,38 @@ openSettings.addEventListener('click', (event) => {
   settingModal.showModal();
 });
 
+// close setting modal
 closeSettings.addEventListener('click', () => {
   settingModal.close();
 })
 
-const updateProfile = document.getElementById('update-profile');
-const updateUsername = document.getElementById('update-username');
-const updateEmail = document.getElementById('update-email');
-const updatePassword = document.getElementById('update-password');
-const confirmUpdatePassword = document.getElementById('confirm-update-password');
-const avatarInput = document.getElementById('update-avatar');
+heart.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const storedToken = localStorage.getItem('token');
+
+  if (selectedRestaurantId !== null) {
+    try {
+      const updatedFavouriteRestauant = await updateUserData({favouriteRestaurant: selectedRestaurantId}, storedToken);
+      if (updatedFavouriteRestauant) {
+        alert('Favourite restaurant set');
+        console.log('WITH ID: ', selectedRestaurantId);
+        welcomeUser();
+      }
+    } catch {
+      alert('Unable to set favourite restaurant');
+    }
+  }
+});
 
 // Update profile 
 updateProfile.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  const confirmUpdatePassword = document.getElementById('confirm-update-password');
+  const updateUsername = document.getElementById('update-username');
+  const updateEmail = document.getElementById('update-email');
+  const updatePassword = document.getElementById('update-password');
+  const avatarInput = document.getElementById('update-avatar');
 
   const storedToken = localStorage.getItem('token'); // Retrieve token from localStorage
   const file = avatarInput.files[0]; // Get the selected file
@@ -438,11 +510,7 @@ updateProfile.addEventListener('submit', async (event) => {
   }
 });
 
-
-
-
-
-// Event listener for the SEARCH button + updater
+// Event listener for the SEARCH button
 searchButton.addEventListener('click', () => {
     const selectedCity = menuCity.value; // Get the selected city
     const filteredRestaurants = restaurants.filter(restaurant => restaurant.city === selectedCity); // Filter restaurants
@@ -471,6 +539,9 @@ searchButton.addEventListener('click', () => {
             const labelH = document.createElement('h4');
             labelH.innerText = restaurant.name;
             label.appendChild(labelH);
+            // save clicked restaurant id
+            selectedRestaurantId = restaurant._id;
+            console.log("SELECTED RESTAURANT", selectedRestaurantId);
         });
 
         createRestaurantCells(restaurant, tr);
@@ -498,6 +569,7 @@ const highlightedIcon = L.icon({
 function highlightMarker(restaurantId) {
   const marker = markers.get(restaurantId);
   label.textContent = '';
+  label.style = '';
   if (marker) {  
     markers.forEach(m => m.setIcon(defaultIcon)); // Reset all markers to the default icon
     marker.setIcon(highlightedIcon).openPopup(); // Highlight the clicked marker and open its popup
@@ -524,7 +596,11 @@ function createTable() {
     const tr = document.createElement('tr');
     tr.addEventListener('click', () => {
         highlightMarker(restaurant._id); // highlight the restaurant on the map
-        console.log(restaurant._id);
+
+        // Assign an object with the restaurant's name and ID
+        selectedRestaurantId = restaurant._id;
+        console.log("SELECTED RESTAURANT", selectedRestaurantId);
+
         const labelH = document.createElement('h4'); // creates & displays selected restaurant
         labelH.innerText = restaurant.name;
         label.append(labelH);
@@ -600,8 +676,6 @@ function cityOption() {
   });
 };
   
-
- 
 // sorts restaurants order
 function sortRestaurants() {
   restaurants.sort(function (a, b) {
@@ -645,6 +719,7 @@ function addMarkersToMap() {
   });
 };
 
+// Starts the location search
 // specifies settings for how the browser should retrieve the user's location
 const options = {
   enableHighAccuracy: true,
@@ -652,11 +727,9 @@ const options = {
   maximumAge: 0
 };
 
-// Starts the location search
 navigator.geolocation.getCurrentPosition(success, error, options);
 
 
-  
 async function main() {
   try {
     await getRestaurants(); // Ensure restaurants are loaded
@@ -670,5 +743,3 @@ async function main() {
 };
   
 main();
-
-export default {restaurants};

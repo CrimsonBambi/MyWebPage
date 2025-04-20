@@ -13,23 +13,13 @@ main {
     display: flex;
     flex-direction: row;
     height: auto;
-    width: auto;
+    width: 100%;
+    padding: 0.1rem;
+    margin-top: 0.5rem;
     justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    background-color: rgba(51, 48, 48, 0.737);
+    background: rgba(51, 48, 48, 0.737);
     border-top-left-radius: 1rem; /* Apply radius only to the top-left corner */
     border-top-right-radius: 1rem; /* Apply radius only to the top-right corner */
-    backdrop-filter: blur(5px);
-}
-
-aside {
-    display: flex;
-    background-color: aliceblue;
-    border-radius: 1rem;
-    margin: 1rem;
-    width: 20vh;
-    height: 20vh;
 }
 
 /* HOLDS 2 CONTAINERS: .finder & .restaurants*/
@@ -40,15 +30,16 @@ aside {
     align-items: center;
     width: auto;
     height: auto;
-    border-radius: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
     padding: 1rem;
-    margin: 0.5rem;
     margin-top: 1rem;
     background: rgb(160, 110, 9);
 }
 
 .restaurant-container h2 {
     color: whitesmoke;
+    padding: 0.1rem;
 }
 
 #user-welcome {
@@ -160,6 +151,20 @@ aside {
     border-width: 0.5rem;
 }
 
+/*FAVOURITE BUTTON*/
+#heart {
+    background-color: whitesmoke;
+    border: none;
+    color: palevioletred;
+    font-size: 1.5rem;
+}
+
+#heart:hover {
+    color: rgb(235, 65, 65);
+    font-weight: 800;
+    font-size: 1.7rem;
+}
+
 /*NAVIGATION CSS*/
 #main-nav {
     background: rgba(51, 48, 48, 0.737);
@@ -167,7 +172,8 @@ aside {
     display: flex;          
     align-items: center;
     justify-content: space-between; 
-    padding: 1rem;    
+    width: 100%;
+    padding: 0.1rem;    
     backdrop-filter: blur(5px);
 }
 
@@ -431,8 +437,30 @@ button[type="submit"]:hover {
     color: whitesmoke;
 }
 
+#menu-links a {
+    padding: 0.1rem;
+    font-weight: 800;
+}
+
 #menu-links li:hover {
     text-decoration: underline;
+}
+
+#favourite-restaurant-menu {
+    width: 110vh;
+    height: 80vh;
+    border: none;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    background-color: whitesmoke;
+    animation: fadeIn 0.3s ease-out;
+    transition: transform 0.3s ease;
+}
+
+#favourite-restaurant-menu::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
 }
 
 #today-menu {
@@ -468,16 +496,52 @@ button[type="submit"]:hover {
     backdrop-filter: blur(3px);
 }
 
-/* MAP CSS*/
-#map {
-    border-radius: 1rem;
+#right-side-container {
+    display: flex;
+    flex-direction: column;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: auto;
+    height: auto;
+    background-color: rgb(160, 110, 9);
+}
+
+#favRestaurant-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 90vh;
+    height: 15vh;
+    border-radius: 0.3rem;
+    margin-bottom: 0.5rem;
+    background-color: whitesmoke;
     border-style: double;
     border-color: rgba(160, 110, 9, 0.647);
-    width: 90vh;
-    height: 82vh;
-    padding: auto;
-    margin-top: 1rem;
-    margin: 0.5rem;
+}
+
+#favRestaurant-container h2 {
+    margin: 0;
+    padding: 0.4rem;
+    font-style: italic;
+}
+
+#favRestaurant-container a {
+    color: black;
+}
+
+/* MAP CSS*/
+#map {
+    display: flex;
+    border-radius: 0.3rem;
+    border-style: double;
+    border-color: rgba(160, 110, 9, 0.647);
+    width: auto;
+    min-width: 90vh;
+    height: 100%;
     padding: 1rem;
 }
 
@@ -486,8 +550,9 @@ button[type="submit"]:hover {
     display: flex;
     align-items: center;
     text-align: left;
+    justify-content: space-between;
     width: 82vh;
-    height: 5vh;
+    height: 6vh;
     margin: 0.5rem;
     background-color: whitesmoke;
     border-radius: 0.3rem;
@@ -500,10 +565,8 @@ button[type="submit"]:hover {
     font-weight: 500;
 }
 
-#selected-restaurant label {
-    color: gray;
-    font-style: italic;
-    font-size: small;
+#selected-restaurant-label {
+    font-size: medium;
     padding: 0.1rem;
     margin-left: 0.5rem;
 }
@@ -514,6 +577,7 @@ footer {
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
     background-color: rgba(51, 48, 48, 0.737);
     border-top-style: groove ;
     border-color: black;
@@ -591,7 +655,7 @@ backdrop-filter: blur(3px);
     font-size: smaller;
 }
 
-#update-profile input:not([type="file"]) {
+#update-profile-form input:not([type="file"]) {
     border-radius: 0.3rem;
     border-style: double;
     border-color: rgba(160, 110, 9, 0.647);
@@ -601,7 +665,7 @@ backdrop-filter: blur(3px);
     width: 15rem;
 }
 
-#update-profile input:not([type="file"]):focus {
+#update-profile-form input:not([type="file"]):focus {
     outline-color: rgb(184, 188, 190);
     border-width: 0.2rem;
     box-shadow: 0 0 0.3125rem rgb(107, 110, 111);

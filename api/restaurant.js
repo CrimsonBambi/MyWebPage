@@ -13,6 +13,15 @@ async function getRestaurants() {
     console.error(error);
   }
 };
+
+async function getRestaurantById(id) {
+  try {
+    const restaurant = await fetchData(apiUrl + `/restaurants/${id}`);
+    return restaurant.name;
+  } catch (error) {
+    console.error(error);
+  }
+};
   
 // gets restaurants daily menu
 async function getDailyMenu(id, lang) {
@@ -37,4 +46,4 @@ function error(err) {
 };
 
 // Export functions as named exports
-export { getRestaurants, getDailyMenu, getWeeklyMenu, error };
+export { getRestaurants, getDailyMenu, getWeeklyMenu, getRestaurantById, error };

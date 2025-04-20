@@ -43,11 +43,12 @@
                 <button type="button" id="search-button">Search</button>
             </div>
             <div id="menu-links">
-                <li><a href="#" id="open-today-menu" ><strong>Todays Menu</strong></a></li>
-                <li><a href="#" id="open-week-menu" ><strong>Weekly Menu</strong></a></li>
+                <li><a href="#" id="open-today-menu">Todays Menu</a></li>
+                <li><a href="#" id="open-week-menu">Weekly Menu</a></li>
             </div>
             <div id="selected-restaurant">
-                <label>Selected Restaurant</label>
+                <label id="selected-restaurant-label" style="color: gray; font-style: italic; font-size: small;" >Selected Restaurant</label>
+                <button type="button" id="heart">&#10084;</button>
                 <!-- Selected restaurant name will be displayed here -->
             </div>
             
@@ -60,11 +61,18 @@
                     <!-- add restaurants here -->
                 </table>
             </div>
-
         </div>
         
-        <div id="map">
-            <!-- map here -->
+        <div id="right-side-container">
+            <div id="favRestaurant-container" style="display: none;">
+                <!-- Selected restaurant name will be displayed here style="display: none;"-->
+                 <h2 id="favRestHeader">empty</h2>
+                <a href="#" id="favRestaurant-container-link">FAVOURITE RESTAURAN LINK</a>
+            </div>
+            <div id="map">
+                
+                <!-- map here -->
+            </div>
         </div>
     </main>
 
@@ -72,6 +80,14 @@
         <h6><strong>@2025</strong> Copyright: Gerli Hirv</h6>
     </footer>
         <!-- All modals are under here -->
+
+    
+    <dialog id="favourite-restaurant-menu">
+        <button type="button" id="close-favRest-menu">&#10005;</button>
+        <div id="favRest-menu-content">
+            <!-- favourite restaurants todays menu here -->
+        </div>
+    </dialog>
 
     <dialog id="today-menu">
         <button type="button" id="close-today-menu">&#10005;</button>
@@ -133,7 +149,7 @@
 
     <dialog id="setting-modal">
         <button type="button" id="close-settings">&#10005;</button>
-        <form method="dialog" id="update-profile">
+        <form method="dialog" id="update-profile-form">
             <h2>Update Profile</h2>
             <input type="text" id="update-username" name="username" placeholder="New Username">
             <input type="email" id="update-email" name="email" placeholder="New Email">

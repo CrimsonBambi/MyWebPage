@@ -13,19 +13,9 @@ export async function login(username, password) {
         }
 
         const data = await response.json();
+        console.log('Login successful. Success 200:', data);
 
-        if (!data.token) {
-            throw new Error('Token not found in the response.');
-        }
-
-        const token = data.token;
-        console.log('Login successful:', data);
-
-        // Save token in localStorage
-        localStorage.setItem('token', token);
-        alert('Login successful!');
-
-        return token;
+        return data;
     } catch (error) {
         console.error('Error logging in:', error);
         alert('An error occurred during login.');
@@ -47,12 +37,12 @@ export async function getCurrentUserProfile(token) {
     }
 
     const data = await response.json();
-    return data; // contains email and username
+    return data; // contains user information
   } catch (error) {
     console.error('Error fetching user profile:', error);
     return null;
   }
-}
+};
 
 export async function usernameAvailability(username) {
   try {
@@ -68,7 +58,7 @@ export async function usernameAvailability(username) {
     console.error('Error checking username availibility:', error);
     return null;
   }
-}
+};
 
 export async function updateUserData(updates, storedToken) {
   try {
@@ -94,4 +84,4 @@ export async function updateUserData(updates, storedToken) {
     console.error('Error updating user data:', error);
     throw error;
   }
-}
+};
