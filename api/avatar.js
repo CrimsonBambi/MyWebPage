@@ -3,12 +3,12 @@ export async function uploadAvatarFile(fileInput, token) {
     const formData = new FormData();
     formData.append('avatar', fileInput); 
 
-    const response = await fetch('https://media2.edu.metropolia.fi/restaurant//api/v1/users/avatar', { // Correct the endpoint if necessary
+    const response = await fetch('https://media2.edu.metropolia.fi/restaurant//api/v1/users/avatar', { 
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}` // Include the token for authentication
+        'Authorization': `Bearer ${token}` 
       },
-      body: formData,// Send the file as FormData
+      body: formData,
     });
 
     if (!response.ok) {
