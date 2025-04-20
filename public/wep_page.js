@@ -19,7 +19,6 @@ const heart = document.getElementById('heart');
 let selectedRestaurantId = null;
 const faveRest = document.getElementById('favRestaurant-container');
 
-
 //favourite-restaurant-menu reference 
 const favRestaurantLink = document.getElementById('favRestaurant-container-link'); // link is created in welcomeUser();
 const favRestContent = document.getElementById('favRest-menu-content');
@@ -128,7 +127,6 @@ function hideLinks() {
   selectedRestaurantId = null;
 };
 
-
 // welcome logged in user
 async function welcomeUser() {
   const text = document.getElementById('welcome-text');
@@ -145,8 +143,8 @@ async function welcomeUser() {
     }
     if (userData.favouriteRestaurant) {
       const restaurantName = await getRestaurantById(userData.favouriteRestaurant);
-      favRestHeader.textContent = 'Check today\'s Menu at your favourite restaurant!';
-      favRestaurantLink.innerText = restaurantName; // Set the restaurant name on the link
+      favRestHeader.textContent = 'Check This Week\'s Menu at Your Favourite Restaurant!';
+      favRestaurantLink.innerText = restaurantName.name; // Set the restaurant name on the link
       favRestaurantLink.dataset.restaurantId = userData.favouriteRestaurant; // Store the restaurant ID for later use
       faveRest.style.display = 'flex';
     } else {
@@ -166,18 +164,21 @@ favRestaurantLink.addEventListener('click', async (event) => {
   event.preventDefault();
 
   const storedToken = localStorage.getItem('token');
-  const restaurantId = favRestaurantLink.dataset.restaurantId; // Get the restaurant ID from the dataset
+  const data = await getCurrentUserProfile(storedToken);
 
-  if (!restaurantId) {
+  if (!data.favouriteRestaurant) {
     alert('Favorite restaurant ID not found.');
     return;
   }
 
   try {
-    const restaurant = await getRestaurantById(restaurantId);
+    const restaurant = await getRestaurantById(data.favouriteRestaurant);
+    console.log('FETCH', restaurant);
     if (restaurant) {
-      const menu = await getWeeklyMenu(restaurantId, 'fi'); // Await the weekly menu data
+      const menu = await getWeeklyMenu(data.favouriteRestaurant, 'fi'); // Await the weekly menu data
       favRestContent.innerHTML = ''; // Clear previous content
+      //const restaurantData = {name: restaurant.name, address: restaurant.address, phone: restaurant.phone}
+      //console.log(restaurantData);
       createModalHtml(restaurant, favRestContent); // Add restaurant details to the modal
 
       if (menu && menu.days && menu.days.length > 0) {
@@ -369,7 +370,7 @@ openProfile.addEventListener('click', async (event) => {
 
       if (userData.favouriteRestaurant) {
         const restaurant = await getRestaurantById(userData.favouriteRestaurant);
-        favRestaurant.textContent = `Favourite Restaurant: ${restaurant}`;
+        favRestaurant.textContent = `Favourite Restaurant: ${restaurant.name}`;
       } else {
         favRestaurant.textContent = 'Favourite Restaurant: -';
       }
@@ -549,7 +550,7 @@ searchButton.addEventListener('click', () => {
     });
 });
 
-//########################## html functions ##########################################
+//########################## setting up the web page ##########################################
 
 const defaultIcon = L.icon({
   iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png', // Default marker icon

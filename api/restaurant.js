@@ -17,7 +17,7 @@ async function getRestaurants() {
 async function getRestaurantById(id) {
   try {
     const restaurant = await fetchData(apiUrl + `/restaurants/${id}`);
-    return restaurant.name;
+    return restaurant;
   } catch (error) {
     console.error(error);
   }
